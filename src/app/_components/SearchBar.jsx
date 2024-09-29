@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleInputChange = (e) => {
+  // @ts-ignore
+  const handleClick = (e) => {
     setSearchQuery(e.target.value);
   };
 
@@ -27,7 +28,7 @@ const SearchBar = () => {
         <input
           type="text"
           value={searchQuery}
-          onChange={handleInputChange}
+          // onChange={handleInputChange}
           placeholder="Enter product URL"
           className="rounded-lg border border-gray-300 px-[260px] py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />

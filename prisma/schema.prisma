@@ -84,8 +84,9 @@ enum ItemType {
 model Item {
      id            String    @id @default(cuid())
      name String
-     price Int
+     price Float
      link String
+     img String
      type ItemType
 
 }

@@ -5,6 +5,7 @@ import { supabase } from "./supabase.js";
 interface WardrobeItem {
   name: string;
   link: string;
+  img: string;
   price: string;
   type: ItemType;
 }
@@ -27,74 +28,70 @@ const Content: React.FC<ContentProps> = ({
   hats,
 }) => {
   const [wardrobe, setWardrobe] = useState<WardrobeItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(false); // Loading state
-  const [error, setError] = useState<string | null>(null); // Error state
+  const [visibleItems, setVisibleItems] = useState(5); // Initially show 5 items
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // Set loading state to true
-      setError(null); // Reset error state
+      setLoading(true);
+      setError(null);
 
       try {
-        if (
-          !["hats", "jackets", "shirts", "pants", "shoes"].includes(
-            selectedPart,
-          )
-        ) {
-          setWardrobe([]); // Handle invalid types
+        const validTypes = ["hats", "jackets", "shirts", "pants", "shoes"];
+        if (!validTypes.includes(selectedPart)) {
+          setWardrobe([]);
         } else {
-          // Fetch from Supabase if part is not in predefined categories
           const { data, error } = await supabase
             .from("Item")
             .select("*")
             .eq("type", selectedPart);
 
-          if (error) {
-            throw new Error(error.message); // Throw an error to be caught in the catch block
-          }
+          if (error) throw new Error(error.message);
 
           console.log("Data fetched from Supabase:", data);
-          setWardrobe(data); // Set data fetched from Supabase
-          console.log(wardrobe);
+          if (data) setWardrobe(data); // Ensure data is not null
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred"); // Set error state
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
-        setLoading(false); // Set loading state to false
+        setLoading(false);
       }
     };
 
-    // Fetch or update wardrobe when selectedPart changes
     fetchData();
-  }, [selectedPart, hats, jackets, shirts, pants, shoes]);
+  }, [selectedPart]);
 
-  if (loading) {
-    return <div className="text-white">Loading...</div>; // Display loading message
-  }
+  useEffect(() => {
+    console.log(wardrobe); // Log updated wardrobe state
+  }, [wardrobe]);
 
-  if (error) {
-    return <div className="text-red-500">Error: {error}</div>; // Display error message
-  }
+  if (loading) return <div className="text-white">Loading...</div>;
+  if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="text-white">
-      <div className="h-[500px] w-[800px] bg-white">
-        <div className="flex flex-wrap text-black">
-          {wardrobe.map((item, index) => (
-            <div
-              key={index}
-              className="flex h-[250px] w-[200px] flex-col items-center"
-            >
+    <div className="flex text-black">
+      <div className="m-10 flex h-[500px] w-[800px] flex-wrap overflow-x-auto bg-white">
+        {wardrobe.slice().map((item, index) => (
+          <div
+            key={index}
+            className="flex h-auto w-[200px] flex-col items-center p-2"
+          >
+            <a href={item.link}>
               <img
-                src={item.link}
+                src={item.img}
                 alt={`Item ${index + 1}`}
-                className="animate-fadeIn h-[250px] w-[200px] object-cover"
+                className="h-[200px] w-full object-cover"
               />
-              <p>{item.name}</p>
-              <p>{item.price}</p>
+            </a>
+            <div className="text-center">
+              <p className="w-full truncate text-sm font-semibold">
+                {item.name}
+              </p>
+              <p className="text-sm text-gray-600">{item.price}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
+import { ItemType } from "@prisma/client";
 import React from "react";
 
 interface NavBarProps {
-  setSelectedPart: (part: string) => void; // Define the type for setSelectedPart
+  setSelectedPart: (part: ItemType) => void;
 }
 
 const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
@@ -9,7 +10,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
     <div className="mr-[30px] flex h-screen items-center">
       <ul className="flex h-[500px] flex-col justify-between text-white">
         <li>
-          <button onClick={() => setSelectedPart("hats")}>
+          <button onClick={() => setSelectedPart(ItemType.hats)}>
             <img
               src="/assets/button.png"
               className="h-[60px] w-[60px]"
@@ -18,7 +19,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
           </button>
         </li>
         <li>
-          <button onClick={() => setSelectedPart("jackets")}>
+          <button onClick={() => setSelectedPart(ItemType.jackets)}>
             <img
               src="/assets/button.png"
               className="h-[60px] w-[60px]"
@@ -27,7 +28,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
           </button>
         </li>
         <li>
-          <button onClick={() => setSelectedPart("shirts")}>
+          <button onClick={() => setSelectedPart(ItemType.shirts)}>
             <img
               src="/assets/button.png"
               className="h-[60px] w-[60px]"
@@ -36,7 +37,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
           </button>
         </li>
         <li>
-          <button onClick={() => setSelectedPart("pants")}>
+          <button onClick={() => setSelectedPart(ItemType.pants)}>
             <img
               src="/assets/button.png"
               className="h-[60px] w-[60px]"
@@ -45,7 +46,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
           </button>
         </li>
         <li>
-          <button onClick={() => setSelectedPart("shoes")}>
+          <button onClick={() => setSelectedPart(ItemType.shoes)}>
             <img
               src="/assets/button.png"
               className="h-[60px] w-[60px]"
