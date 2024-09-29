@@ -1,4 +1,5 @@
 import { ItemType } from "@prisma/client";
+
 import React from "react";
 
 interface NavBarProps {
@@ -12,7 +13,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
         <li>
           <button onClick={() => setSelectedPart(ItemType.hats)}>
             <img
-              src="/assets/button.png"
+              src="/assets/hat.png"
               className="h-[60px] w-[60px]"
               alt="Hats"
             />
@@ -21,7 +22,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
         <li>
           <button onClick={() => setSelectedPart(ItemType.jackets)}>
             <img
-              src="/assets/button.png"
+              src="/assets/jacket.png"
               className="h-[60px] w-[60px]"
               alt="Jackets"
             />
@@ -30,7 +31,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
         <li>
           <button onClick={() => setSelectedPart(ItemType.shirts)}>
             <img
-              src="/assets/button.png"
+              src="/assets/shirt.png"
               className="h-[60px] w-[60px]"
               alt="Shirts"
             />
@@ -39,7 +40,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
         <li>
           <button onClick={() => setSelectedPart(ItemType.pants)}>
             <img
-              src="/assets/button.png"
+              src="/assets/pants.png"
               className="h-[60px] w-[60px]"
               alt="Pants"
             />
@@ -48,7 +49,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
         <li>
           <button onClick={() => setSelectedPart(ItemType.shoes)}>
             <img
-              src="/assets/button.png"
+              src="/assets/boot.png"
               className="h-[60px] w-[60px]"
               alt="Shoes"
             />
