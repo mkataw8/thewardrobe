@@ -43,7 +43,11 @@ const Content: React.FC<ContentProps> = ({ selectedPart }) => {
     );
   }
   if (wardrobe === undefined) {
-    return null;
+    return (
+      <div className="m-10 flex h-[500px] w-[800px] flex-wrap items-center justify-center overflow-x-auto bg-slate-800 text-4xl text-white fade-in">
+        Start A Wardrobe
+      </div>
+    );
   }
   if (error) return <div className="text-red-500">Error: {error}</div>;
   if (wardrobe.length === 0)
