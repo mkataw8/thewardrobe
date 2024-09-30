@@ -157,7 +157,9 @@ export const AddItem = () => {
                 <SelectContent>
                   {["hats", "jackets", "shirts", "pants", "shoes"].map(
                     (option) => (
-                      <SelectItem value={option}>{option}</SelectItem>
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
                     ),
                   )}
                 </SelectContent>
