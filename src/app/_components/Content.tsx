@@ -27,11 +27,11 @@ const Content: React.FC<ContentProps> = ({ selectedPart }) => {
 
   const { data: wardrobe, isLoading } = api.item.get.useQuery(
     {
-      type: "hats",
+      type: selectedPart ?? "hats",
       userId: userID,
     },
     {
-      enabled: !!userID,
+      enabled: !!userID && !!selectedPart,
     },
   );
 

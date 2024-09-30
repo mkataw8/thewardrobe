@@ -7,6 +7,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { api } from "@/trpc/react";
 import { useUser } from "@clerk/clerk-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -140,20 +147,22 @@ export const AddItem = () => {
               <FormLabel>
                 <div className="mt-3 flex-col">Category</div>
               </FormLabel>
-              <FormControl>
-                <select {...field} className="text-black">
-                  <option value="" disabled>
-                    Select item type
-                  </option>
+
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger id="type">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
                   {["hats", "jackets", "shirts", "pants", "shoes"].map(
                     (option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
+                      <SelectItem value={option}>{option}</SelectItem>
                     ),
                   )}
-                </select>
-              </FormControl>
+                </SelectContent>
+              </Select>
+
               <FormMessage />
             </FormItem>
           )}
