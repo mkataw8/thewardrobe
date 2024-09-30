@@ -1,5 +1,8 @@
 # Create T3 App
 
+"This project is a full-stack wardrobe management platform built with React, Tailwind CSS, TypeScript, Supabase, and Clerk. It allows users to save and manage their clothing items in one centralized location, offering the flexibility to switch between different categories such as jackets, shoes, shirts, pants, and hats." 
+
+
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
 ## What's next? How do I make an app with this?
