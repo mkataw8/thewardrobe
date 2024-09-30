@@ -19,7 +19,6 @@ interface ContentProps {
 }
 
 const Content: React.FC<ContentProps> = ({ selectedPart }) => {
-  // const [wardrobe, setWardrobe] = useState<WardrobeItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
@@ -37,39 +36,40 @@ const Content: React.FC<ContentProps> = ({ selectedPart }) => {
 
   if (isLoading) {
     return (
-      <div className="flex h-[500px] w-[800px] items-center justify-center bg-slate-800">
+      <div className="m-5 flex h-[500px] w-full items-center justify-center overflow-x-auto bg-slate-800 text-4xl text-white fade-in md:w-[700px] lg:w-[800px]">
         <div className="text-2xl text-white">Loading...</div>
       </div>
     );
   }
   if (wardrobe === undefined) {
     return (
-      <div className="m-10 flex h-[500px] w-[800px] flex-wrap items-center justify-center overflow-x-auto bg-slate-800 text-4xl text-white fade-in">
+      <div className="m-10 flex h-[500px] w-full items-center justify-center overflow-x-auto bg-slate-800 text-4xl text-white fade-in md:w-[700px] lg:w-[800px]">
         Start A Wardrobe
       </div>
     );
   }
   if (error) return <div className="text-red-500">Error: {error}</div>;
-  if (wardrobe.length === 0)
+  if (wardrobe.length === 0) {
     return (
-      <div className="m-10 flex h-[500px] w-[800px] flex-wrap items-center justify-center overflow-x-auto bg-slate-800 text-4xl text-white fade-in">
+      <div className="m-5 flex h-[500px] w-full items-center justify-center overflow-x-auto bg-slate-800 text-4xl text-white fade-in md:w-[700px] lg:w-[800px]">
         Start A Wardrobe
       </div>
     );
+  }
 
   return (
-    <div className="flex text-black">
-      <div className="m-10 flex h-[500px] w-[800px] flex-wrap overflow-x-auto bg-white">
+    <div className="flex justify-center text-black">
+      <div className="flex h-[500px] w-full max-w-[800px] flex-wrap justify-center overflow-y-auto bg-white">
         {wardrobe.map((item, index) => (
           <div
             key={index}
-            className="flex h-auto w-[200px] flex-col items-center p-2"
+            className="flex flex-col sm:h-[250px] sm:w-[200px] md:h-[250px] md:w-[200px] lg:h-[250px] lg:w-[200px]" // Set padding to 0
           >
             <a href={item.link}>
               <img
                 src={item.img}
                 alt={`Item ${index + 1}`}
-                className="h-[200px] w-full object-cover"
+                className="h-[210px] w-full object-cover"
               />
             </a>
             <div className="text-center">

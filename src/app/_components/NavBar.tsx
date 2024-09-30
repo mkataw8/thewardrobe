@@ -8,8 +8,8 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = ({ setSelectedPart }) => {
   return (
-    <div className="mr-[30px] flex h-screen items-center">
-      <ul className="flex h-[500px] flex-col justify-between text-white">
+    <div className="flex h-screen items-center">
+      <ul className="flex h-[500px] flex-col justify-between text-white sm:mr-[25px]">
         <li>
           <button onClick={() => setSelectedPart(ItemType.hats)}>
             <img
