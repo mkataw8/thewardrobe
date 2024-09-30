@@ -29,14 +29,7 @@ export const Clothing = () => {
         </div>
         <div className="mt-[40px] flex-col"></div>
         <div className="mt-[40px] flex-col">
-          <Content
-            selectedPart={selectedPart || ItemType.hats}
-            hats={[]}
-            jackets={[]}
-            shirts={[]}
-            pants={[]}
-            shoes={[]}
-          />
+          <Content selectedPart={selectedPart} />
           {/* <SearchBar /> */}
           <AddItem />
         </div>

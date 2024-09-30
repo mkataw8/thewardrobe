@@ -1,8 +1,9 @@
+"use client";
+import { api } from "@/trpc/react";
 import { useUser } from "@clerk/clerk-react";
 import { ItemType } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./content.css";
-import { supabase } from "./supabase.js";
 
 interface WardrobeItem {
   name: string;
@@ -14,54 +15,36 @@ interface WardrobeItem {
 }
 
 interface ContentProps {
-  selectedPart: ItemType;
+  selectedPart: ItemType | undefined;
 }
 
 const Content: React.FC<ContentProps> = ({ selectedPart }) => {
-  const [wardrobe, setWardrobe] = useState<WardrobeItem[]>([]);
+  // const [wardrobe, setWardrobe] = useState<WardrobeItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
-  const userID = user?.id;
+  const userID = user?.id ?? "";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
+  const { data: wardrobe, isLoading } = api.item.get.useQuery(
+    {
+      type: "hats",
+      userId: userID,
+    },
+    {
+      enabled: !!userID,
+    },
+  );
 
-      try {
-        const validTypes = ["hats", "jackets", "shirts", "pants", "shoes"];
-        if (!validTypes.includes(selectedPart)) {
-          setWardrobe([]);
-        } else if (userID) {
-          const { data, error } = await supabase
-            .from("Item")
-            .select("*")
-            .eq("userId", userID) // Filter by user ID
-            .eq("type", selectedPart); // Filter by selected type
-
-          if (error) throw new Error(error.message);
-
-          if (data) setWardrobe(data); // Ensure data is not null
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [selectedPart, userID]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex h-[500px] w-[800px] items-center justify-center bg-slate-800">
         <div className="text-2xl text-white">Loading...</div>
       </div>
     );
   }
-
+  if (wardrobe === undefined) {
+    return null;
+  }
   if (error) return <div className="text-red-500">Error: {error}</div>;
   if (wardrobe.length === 0)
     return (

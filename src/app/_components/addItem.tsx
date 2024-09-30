@@ -18,6 +18,7 @@ export const AddItem = () => {
   const { mutateAsync: addItem } = api.item.create.useMutation();
   const { user } = useUser();
   const userId = user?.id; // Get the user ID
+  const utils = api.useUtils();
 
   const formSchema = z.object({
     name: z.string().min(1),
@@ -49,6 +50,8 @@ export const AddItem = () => {
       toast.success("Successfully added item");
     } catch (error) {
       console.error("Error adding item:", error);
+    } finally {
+      await utils.item.invalidate();
     }
   }
 

@@ -1,4 +1,5 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { ItemType } from "@prisma/client";
 import { z } from "zod";
 
 export const itemRouter = createTRPCRouter({
@@ -27,5 +28,23 @@ export const itemRouter = createTRPCRouter({
           type: type, // Save the type in the database
         },
       });
+    }),
+  get: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        type: z.nativeEnum(ItemType),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const result = await ctx.db.item.findMany({
+        where: {
+          // userId: ctx.session?.user.id,
+          userId: input.userId,
+          type: input.type,
+        },
+      });
+
+      return result;
     }),
 });
