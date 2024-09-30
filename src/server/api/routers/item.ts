@@ -9,18 +9,20 @@ export const itemRouter = createTRPCRouter({
         price: z.string().min(1),
         link: z.string().min(1),
         img: z.string().min(1),
+        userId: z.string().min(1),
         type: z.enum(["hats", "jackets", "shirts", "pants", "shoes"]), // Add type here
       }),
     )
     .mutation(async ({ ctx, input }) => {
       console.log(input);
 
-      const { name, link, price, img, type } = input; // Destructure type from input
+      const { name, link, price, userId, img, type } = input; // Destructure type from input
       return ctx.db.item.create({
         data: {
           name: name,
           link: link,
           img: img,
+          userId: userId,
           price: Number(price),
           type: type, // Save the type in the database
         },

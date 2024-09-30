@@ -87,6 +87,7 @@ model Item {
      price Float
      link String
      img String
+     userId String
      type ItemType
 
 }

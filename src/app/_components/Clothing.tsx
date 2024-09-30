@@ -9,7 +9,7 @@ import NavBar from "./NavBar"; // Ensure the correct filename casing
 export const Clothing = () => {
   const [count, setCount] = useState(0);
 
-  // Initialize with a valid item type, e.g., undefined or a default ItemType
+  // Initialize selectedPart as undefined
   const [selectedPart, setSelectedPart] = useState<ItemType | undefined>(
     undefined,
   );
@@ -30,7 +30,7 @@ export const Clothing = () => {
         <div className="mt-[40px] flex-col"></div>
         <div className="mt-[40px] flex-col">
           <Content
-            selectedPart={selectedPart || ItemType.hats} // Pass the valid selected part
+            selectedPart={selectedPart || ItemType.hats}
             hats={[]}
             jackets={[]}
             shirts={[]}

@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
+import { useUser } from "@clerk/clerk-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -15,6 +16,8 @@ import { z } from "zod";
 
 export const AddItem = () => {
   const { mutateAsync: addItem } = api.item.create.useMutation();
+  const { user } = useUser();
+  const userId = user?.id; // Get the user ID
 
   const formSchema = z.object({
     name: z.string().min(1),
@@ -29,9 +32,20 @@ export const AddItem = () => {
   const form = useForm<formSchemaValues>({
     resolver: zodResolver(formSchema),
   });
+
   async function onSubmit(data: formSchemaValues) {
+    if (!userId) {
+      toast.error("User ID is not available");
+      return;
+    }
+
+    const itemData = {
+      ...data,
+      userId, // Include the user ID
+    };
+
     try {
-      await addItem(data);
+      await addItem(itemData);
       toast.success("Successfully added item");
     } catch (error) {
       console.error("Error adding item:", error);
@@ -76,6 +90,7 @@ export const AddItem = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="img"

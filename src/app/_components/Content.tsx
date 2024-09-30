@@ -1,5 +1,7 @@
+import { useUser } from "@clerk/clerk-react";
 import { ItemType } from "@prisma/client";
 import { useEffect, useState } from "react";
+import "./content.css";
 import { supabase } from "./supabase.js";
 
 interface WardrobeItem {
@@ -7,30 +9,20 @@ interface WardrobeItem {
   link: string;
   img: string;
   price: string;
+  userId: string; // Ensure this matches the user ID type
   type: ItemType;
 }
 
 interface ContentProps {
   selectedPart: ItemType;
-  jackets: WardrobeItem[];
-  shoes: WardrobeItem[];
-  shirts: WardrobeItem[];
-  pants: WardrobeItem[];
-  hats: WardrobeItem[];
 }
 
-const Content: React.FC<ContentProps> = ({
-  selectedPart,
-  jackets,
-  shoes,
-  shirts,
-  pants,
-  hats,
-}) => {
+const Content: React.FC<ContentProps> = ({ selectedPart }) => {
   const [wardrobe, setWardrobe] = useState<WardrobeItem[]>([]);
-  const [visibleItems, setVisibleItems] = useState(5); // Initially show 5 items
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useUser();
+  const userID = user?.id;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,15 +33,15 @@ const Content: React.FC<ContentProps> = ({
         const validTypes = ["hats", "jackets", "shirts", "pants", "shoes"];
         if (!validTypes.includes(selectedPart)) {
           setWardrobe([]);
-        } else {
+        } else if (userID) {
           const { data, error } = await supabase
             .from("Item")
             .select("*")
-            .eq("type", selectedPart);
+            .eq("userId", userID) // Filter by user ID
+            .eq("type", selectedPart); // Filter by selected type
 
           if (error) throw new Error(error.message);
 
-          console.log("Data fetched from Supabase:", data);
           if (data) setWardrobe(data); // Ensure data is not null
         }
       } catch (err) {
@@ -60,19 +52,28 @@ const Content: React.FC<ContentProps> = ({
     };
 
     fetchData();
-  }, [selectedPart]);
+  }, [selectedPart, userID]);
 
-  useEffect(() => {
-    console.log(wardrobe); // Log updated wardrobe state
-  }, [wardrobe]);
+  if (loading) {
+    return (
+      <div className="flex h-[500px] w-[800px] items-center justify-center bg-slate-800">
+        <div className="text-2xl text-white">Loading...</div>
+      </div>
+    );
+  }
 
-  if (loading) return <div className="text-white">Loading...</div>;
   if (error) return <div className="text-red-500">Error: {error}</div>;
+  if (wardrobe.length === 0)
+    return (
+      <div className="m-10 flex h-[500px] w-[800px] flex-wrap items-center justify-center overflow-x-auto bg-slate-800 text-4xl text-white fade-in">
+        Start A Wardrobe
+      </div>
+    );
 
   return (
     <div className="flex text-black">
       <div className="m-10 flex h-[500px] w-[800px] flex-wrap overflow-x-auto bg-white">
-        {wardrobe.slice().map((item, index) => (
+        {wardrobe.map((item, index) => (
           <div
             key={index}
             className="flex h-auto w-[200px] flex-col items-center p-2"
